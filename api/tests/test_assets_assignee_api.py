@@ -17,7 +17,6 @@ class AssetAssigneeAPITest(APIBaseTestCase):
     """ Tests for the AssetAssignee endpoint"""
 
     def setUp(self):
-        super(AssetAssigneeAPITest, self).setUp()
         self.user = User.objects.create(
             email='testuser@gmail.com', cohort=19,
             slack_handle='tester', password='qwerty123'

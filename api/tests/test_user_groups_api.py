@@ -13,7 +13,6 @@ class UserGroupTestCase(APIBaseTestCase):
     """ Tests fro the UserGroup endpoint """
 
     def setUp(self):
-        super(UserGroupTestCase, self).setUp()
         self.admin = User.objects.create_superuser(
             email='adminuser@gmail.com', cohort=1,
             slack_handle='admintester', password='admin1234'

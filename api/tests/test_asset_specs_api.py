@@ -12,7 +12,6 @@ class AssetSpecsAPITest(APIBaseTestCase):
     """ Tests for the AssetCategory endpoint"""
 
     def setUp(self):
-        super(AssetSpecsAPITest, self).setUp()
         self.token_admin = 'testtoken'
         self.admin = User.objects.create_superuser(
             email='testadmin@gmail.com', cohort=19,

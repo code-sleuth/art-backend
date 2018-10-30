@@ -14,7 +14,6 @@ client = APIClient()
 
 class AllocationTestCase(APIBaseTestCase):
     def setUp(self):
-        super(AllocationTestCase, self).setUp()
         self.user = User.objects.create_user(
             email='user@site.com', cohort=20,
             slack_handle='@admin', password='devpassword'

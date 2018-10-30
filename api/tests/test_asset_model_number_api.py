@@ -14,7 +14,6 @@ class AssetModelNumberAPITest(APIBaseTestCase):
     ''' Tests for the Asset Model Number endpoint'''
 
     def setUp(self):
-        super(AssetModelNumberAPITest, self).setUp()
         self.user = User.objects.create(
             email='testuser@gmail.com', cohort=19,
             slack_handle='tester', password='qwerty123'

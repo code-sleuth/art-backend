@@ -24,7 +24,6 @@ class AssetLogModelTest(APIBaseTestCase):
     """Tests for the AssetLog Model and API"""
 
     def setUp(self):
-        super(AssetLogModelTest, self).setUp()
         asset_category = AssetCategory.objects.create(
             category_name="Computer")
         asset_sub_category = AssetSubCategory.objects.create(

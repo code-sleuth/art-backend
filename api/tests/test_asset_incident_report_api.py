@@ -20,7 +20,6 @@ class AssetIncidentReportAPITest(APIBaseTestCase):
     """ Tests for the AssetIncidentReport API """
 
     def setUp(self):
-        super(AssetIncidentReportAPITest, self).setUp()
         asset_category = AssetCategory.objects.create(
             category_name="Computer")
         asset_sub_category = AssetSubCategory.objects.create(

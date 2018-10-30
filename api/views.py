@@ -1,5 +1,6 @@
 import csv
 import codecs
+import logging
 import os
 import re
 from itertools import chain
@@ -16,14 +17,13 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from django_filters import rest_framework as filters
 from rest_framework.filters import OrderingFilter
 from api.authentication import FirebaseTokenAuthentication
 from api.filters import AssetFilter, UserFilter
-from core.assets_saver_helper import save_asset
+from core.import_helpers import process_file_data
 from core.models import Asset, SecurityUser, AssetLog, UserFeedback, \
     AssetStatus, AllocationHistory, AssetCategory, AssetSubCategory, \
     AssetType, AssetModelNumber, AssetCondition, AssetMake, \
@@ -47,6 +47,7 @@ from .serializers import UserSerializerWithAssets, \
 from api.permissions import IsApiUser, IsSecurityUser
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class UserViewSet(ModelViewSet):
@@ -386,40 +387,36 @@ class AssetsImportViewSet(APIView):
 
         file_obj = codecs.iterdecode(file_obj, 'utf-8')
         csv_reader = csv.DictReader(file_obj, delimiter=",")
+        response = {}
+        if not csv_reader.fieldnames:
+            response["message"] = "Failure - unable to process file"
+            return Response(data=response, status=500)
+
         skipped_file_name = self.request.user.email
         file_name = re.search(r'\w+', skipped_file_name).group()
-        response = {}
 
-        error = False
-
-        if not save_asset(csv_reader, file_name):
-
-            path = request.build_absolute_uri(reverse('skipped'))
-
-            response['fail'] = "Some assets were skipped." \
-                               " Download the skipped assets file from"
-            response['file'] = "{}".format(path)
-
-            error = True
-
-        response['success'] = "Asset import completed successfully "
-        if error:
-            response['success'] += "Assets that have not been imported have been written to a file."
+        try:
+            result = process_file_data(csv_reader, custom_name=file_name)
+        except Exception as e:
+            logger.error(str(e))
+            response["message"] = "Failure - unable to process file"
+            return Response(data=response, status=500)
+        response["message"] = "File processed successfully."
+        if result.get("skipped"):
+            response["message"] += " Skipped records saved to skipped_assets"
         return Response(data=response, status=200)
 
 
 class SkippedAssets(APIView):
     def get(self, request):
-        filename = os.path.join(settings.BASE_DIR,
-                                "SkippedAssets/{}.csv".format(re.search(r'\w+', request.user.email).group()))
+        skipped_records_directory = os.getenv('SKIPPED_ASSETS_DIRECTORY', 'skipped_assets')
+        skipped_records_path = os.path.join(settings.BASE_DIR, skipped_records_directory)
 
-        # send file
+        # file = open(filename, 'rb')
+        # response = FileResponse(file, content_type='text/csv')
+        # response['Content-Disposition'] = 'attachment; filename="SkippedAssets.csv"'
 
-        file = open(filename, 'rb')
-        response = FileResponse(file, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="SkippedAssets.csv"'
-
-        return response
+        # return response
 
 
 class AndelaCentreViewset(ModelViewSet):

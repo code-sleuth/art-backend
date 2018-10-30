@@ -17,7 +17,6 @@ client = APIClient()
 
 class AssetMakeAPICase(APIBaseTestCase):
     def setUp(self):
-        super(AssetMakeAPICase, self).setUp()
         self.user = User.objects.create_user(
             email='user@site.com', cohort=20,
             slack_handle='@admin', password='devpassword'

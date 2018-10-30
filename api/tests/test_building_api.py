@@ -13,7 +13,6 @@ class OfficeBlockAPITest(APIBaseTestCase):
     """ Tests for the OfficeBlock endpoint"""
 
     def setUp(self):
-        super(OfficeBlockAPITest, self).setUp()
         self.admin = User.objects.create_superuser(
             email='testuser@gmail.com', cohort=19,
             slack_handle='tester', password='qwerty123'

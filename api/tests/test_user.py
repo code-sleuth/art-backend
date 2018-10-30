@@ -13,7 +13,6 @@ client = APIClient()
 
 class UserTestCase(APIBaseTestCase):
     def setUp(self):
-        super(UserTestCase, self).setUp()
         self.user = User.objects.create(
             email='test@site.com', cohort=20,
             slack_handle='@test_user', password='devpassword'

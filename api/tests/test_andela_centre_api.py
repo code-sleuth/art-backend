@@ -14,7 +14,6 @@ class AndelaCentreAPITest(APIBaseTestCase):
     """ Tests for the Andela Centre endpoint"""
 
     def setUp(self):
-        super(AndelaCentreAPITest, self).setUp()
         self.admin = User.objects.create_superuser(
             email='testuser@gmail.com', cohort=19,
             slack_handle='tester', password='qwerty123'

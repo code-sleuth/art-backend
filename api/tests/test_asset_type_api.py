@@ -14,7 +14,6 @@ class AssetCategoryAPITest(APIBaseTestCase):
     """ Tests for the AssetCategory endpoint"""
 
     def setUp(self):
-        super(AssetCategoryAPITest, self).setUp()
         self.user = User.objects.create(
             email='testuser@gmail.com', cohort=19,
             slack_handle='tester', password='qwerty123'

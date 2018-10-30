@@ -18,7 +18,6 @@ client = APIClient()
 
 class AssetHealthTestCase(APIBaseTestCase):
     def setUp(self):
-        super(AssetHealthTestCase, self).setUp()
         self.admin = User.objects.create_superuser(
             email='admin@site.com', cohort=20,
             slack_handle='@admin', password='devpassword'

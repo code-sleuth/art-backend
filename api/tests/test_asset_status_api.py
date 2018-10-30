@@ -22,7 +22,6 @@ class AssetStatusAPITest(APIBaseTestCase):
     """Tests for the Asset Status API"""
 
     def setUp(self):
-        super(AssetStatusAPITest, self).setUp()
         asset_category = AssetCategory.objects.create(
             category_name="Computer")
         asset_sub_category = AssetSubCategory.objects.create(

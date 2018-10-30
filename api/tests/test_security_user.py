@@ -13,7 +13,6 @@ User = get_user_model()
 
 class SecurityUserTestCase(APIBaseTestCase):
     def setUp(self):
-        super(SecurityUserTestCase, self).setUp()
         self.security_users_url = reverse('security-user-emails-list')
         self.security_users_admin_url = reverse('security-users-list')
 
